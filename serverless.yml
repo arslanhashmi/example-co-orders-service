@@ -33,3 +33,21 @@ functions:
       - httpApi:
           path: /service
           method: post
+  add_order:
+    handler: handler.add_order
+    events:
+      - httpApi:
+          path: /order
+          method: post
+  update_order:
+    handler: handler.update_order
+    events:
+      - httpApi:
+          path: /order/{id}/
+          method: patch
+  delete_order:
+    handler: handler.delete_order
+    events:
+      - httpApi:
+          path: /order/{id}/
+          method: delete
