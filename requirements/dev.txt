@@ -1,0 +1,4 @@
+isort
+pytest
+flake8
+pre-commit
