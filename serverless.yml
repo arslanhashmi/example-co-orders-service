@@ -27,3 +27,9 @@ functions:
         - httpApi:
             path: /services
             method: get
+  add_service:
+    handler: handler.add_service
+    events:
+      - httpApi:
+          path: /service
+          method: post

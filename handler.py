@@ -2,7 +2,7 @@ import json
 
 from exampleco.models.database import session
 from exampleco.models.database.orders import Order, OrderSchema
-from exampleco.models.database.services import ServiceSchema, Service
+from exampleco.models.database.services import ServiceSchema, Service, ServiceRequestSchema
 
 
 # pylint: disable=unused-argument
@@ -36,5 +36,40 @@ def get_service(event, context):
     results = services_schema.dump(service)
 
     response = {"statusCode": 200, "body": json.dumps(results)}
+
+    return response
+
+
+# pylint: disable=unused-argument
+def get_all_services(event, context):
+    """
+    Example function that demonstrates grabbing list or orders from database
+
+    Returns:
+        Returns a list of all services pulled from the database.
+    """
+    services_schema = ServiceSchema(many=True)
+    services = session.query(Service).all()
+    results = services_schema.dump(services)
+
+    response = {"statusCode": 200, "body": json.dumps(results)}
+
+    return response
+
+
+def add_service(event, context):
+    """
+    Example function that demonstrates grabbing list or orders from database
+
+    Returns:
+        Returns a list of all services pulled from the database.
+    """
+    data = ServiceRequestSchema().loads(event["body"])
+    service = Service(**data)
+    session.add(service)
+    session.commit()
+    services_schema = ServiceSchema()
+    results = services_schema.dump(service)
+    response = {"statusCode": 201, "body": json.dumps(results)}
 
     return response
