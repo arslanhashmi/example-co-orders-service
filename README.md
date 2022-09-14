@@ -5,6 +5,9 @@ Setup your development environment:
 ```bash
 # start db container, setup env, install requirements, apply migrations and start the serverless process
 $ make up
+
+# run tests
+$ make test
 ```
 
 ### Install the git hook scripts

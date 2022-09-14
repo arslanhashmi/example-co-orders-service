@@ -1,5 +1,5 @@
 test:
-	pytest;
+	@. venv/bin/activate; pytest src/exampleco/tests --verbose;
 
 test-style:
 	py.test

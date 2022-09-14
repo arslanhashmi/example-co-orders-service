@@ -7,6 +7,7 @@ provider:
   name: aws
   runtime: python3.8
   lambdaHashingVersion: 20201221
+  timeout: 30
 
 functions:
   get_all_orders:
@@ -19,7 +20,7 @@ functions:
     handler: handler.get_service
     events:
       - httpApi:
-          path: /service/{id}/
+          path: /services/{id}/
           method: get
   get_all_services:
       handler: handler.get_all_services
@@ -31,23 +32,23 @@ functions:
     handler: handler.add_service
     events:
       - httpApi:
-          path: /service
+          path: /services
           method: post
   add_order:
     handler: handler.add_order
     events:
       - httpApi:
-          path: /order
+          path: /orders
           method: post
   update_order:
     handler: handler.update_order
     events:
       - httpApi:
-          path: /order/{id}/
+          path: /orders/{id}/
           method: patch
   delete_order:
     handler: handler.delete_order
     events:
       - httpApi:
-          path: /order/{id}/
+          path: /orders/{id}/
           method: delete

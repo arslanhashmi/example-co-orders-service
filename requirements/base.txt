@@ -18,6 +18,7 @@ wrapt==1.12.1
 cryptography==38.0.1
 alembic==1.8.1
 PyMySQL==1.0.2
+dateutils==0.6.12
 
 # orders service python package
 -e src/exampleco

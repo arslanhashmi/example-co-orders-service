@@ -1,22 +1,41 @@
 import json
+from datetime import datetime
+
+from dateutil.relativedelta import relativedelta
 
 from exampleco.models.database import session
 from exampleco.models.database.orders import Order, OrderSchema, OrderRequestSchema
 from exampleco.models.database.services import ServiceSchema, Service, ServiceRequestSchema
 
 
+def span_mapper(span):
+    now = datetime.now()
+    if span == 'THIS_YEAR':
+        span_time = now - relativedelta(day=1, month=1)   # Keeping same year and setting to 1st Jan day start
+    elif span == 'THIS_WEEK':
+        span_time = now - relativedelta(days=now.weekday())
+    else:
+        span_time = now - relativedelta(day=1)
+    return span_time - relativedelta(second=0, minute=0, hour=0)
+
+
 # pylint: disable=unused-argument
 def get_all_orders(event, context):
     """
-    Example function that demonstrates grabbing list or orders from database
+    List or orders from database
 
     Returns:
-        Returns a list of all orders pulled from the database.
+        Returns a list of all orders (that aren't deleted) pulled from the database.
     """
-
+    
     orders_schema = OrderSchema(many=True)
-    orders = session.query(Order).filter_by(active_status=True).all()
-    results = orders_schema.dump(orders)
+    orders = session.query(Order).filter_by(is_deleted=False)
+
+    if query_params := event.get("queryStringParameters"):
+        if span := query_params.get("span", None):
+            orders = orders.filter(Order.created_on >= span_mapper(span))
+
+    results = orders_schema.dump(orders.all())
 
     response = {"statusCode": 200, "body": json.dumps(results)}
 
@@ -43,7 +62,7 @@ def get_service(event, context):
 # pylint: disable=unused-argument
 def get_all_services(event, context):
     """
-    Example function that demonstrates grabbing list or orders from database
+    List all services from database
 
     Returns:
         Returns a list of all services pulled from the database.
@@ -59,10 +78,10 @@ def get_all_services(event, context):
 
 def add_service(event, context):
     """
-    Example function that demonstrates grabbing list or orders from database
+    Adds new service
 
     Returns:
-        Returns a list of all services pulled from the database.
+        Returns newly added service to the database.
     """
     data = ServiceRequestSchema().loads(event["body"])
     service = Service(**data)
@@ -77,10 +96,10 @@ def add_service(event, context):
 
 def delete_order(event, context):
     """
-    Example function that demonstrates grabbing list or orders from database
+    Deletes order
 
     Returns:
-        Returns a list of all orders pulled from the database.
+        Returns 200 status code on setting delete status on order valid order
     """
     order = session.query(Order).get(event["pathParameters"]["id"])
 
@@ -88,17 +107,17 @@ def delete_order(event, context):
         order.active_status = False
         session.add(order)
         session.commit()
-        return {"statusCode": 204}
+        return {"statusCode": 200}
 
     return {"statusCode": 404}
 
 
 def update_order(event, context):
     """
-    Example function that demonstrates grabbing list or orders from database
+    Updates order
 
     Returns:
-        Returns a list of all orders pulled from the database.
+        Returns updated order
     """
 
     orders_schema = OrderRequestSchema()
@@ -120,20 +139,21 @@ def update_order(event, context):
 
 def add_order(event, context):
     """
-    Example function that demonstrates grabbing list or orders from database
+    Adds new order
 
     Returns:
-        Returns a list of all orders pulled from the database.
+        Returns newly added order to the database
     """
 
     orders_schema = OrderSchema()
     data = OrderRequestSchema().loads(event["body"])
     service = session.query(Service).filter(Service.id.in_(data["services"])).all()
-    order = Order(description=data["description"], active_status=data["active_status"])
+    order = Order(description=data["description"])
     order.service = service
     session.add(order)
     session.commit()
     results = orders_schema.dump(order)
+    from pdb import set_trace; set_trace()
 
     response = {"statusCode": 200, "body": json.dumps(results)}
 
