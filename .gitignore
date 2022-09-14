@@ -116,6 +116,7 @@ venv.bak/
 
 # Rope project settings
 .ropeproject
+.DS_Store
 
 # mkdocs documentation
 /site
@@ -127,3 +128,10 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# node modules
+node_modules/*
+frontend/node_modules/*
+
+# DB mount path
+docker/data 
