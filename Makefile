@@ -28,3 +28,6 @@ up: up-db setup upgrade-db serverless-offline
 
 test: setup
 	@. venv/bin/activate; pytest src/exampleco/tests --verbose;
+
+ui:
+	npm ci --prefix frontend/ && npm start --prefix frontend/

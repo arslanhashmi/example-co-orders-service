@@ -6,6 +6,9 @@ Setup your development environment:
 # start db container, setup env, install requirements, apply migrations and start the serverless process
 $ make up
 
+# start orders dashboard
+$ make ui
+
 # run tests
 $ make test
 ```
