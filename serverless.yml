@@ -15,3 +15,9 @@ functions:
       - httpApi:
           path: /orders
           method: get
+  get_service:
+    handler: handler.get_service
+    events:
+      - httpApi:
+          path: /service/{id}/
+          method: get
