@@ -1,6 +1,3 @@
-test:
-	@. venv/bin/activate; pytest src/exampleco/tests --verbose;
-
 test-style:
 	py.test
 
@@ -28,3 +25,6 @@ serverless-offline:
 			--region us-east-1 \
 
 up: up-db setup upgrade-db serverless-offline
+
+test: setup
+	@. venv/bin/activate; pytest src/exampleco/tests --verbose;

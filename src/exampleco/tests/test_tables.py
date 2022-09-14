@@ -133,7 +133,7 @@ def test_order_updated(db_session):
 
 
 def test_service_created(db_session):
-    service_params ={
+    service_params = {
         "id": 3,
         "name": "Service 3",
         "description": "Service description 3",
