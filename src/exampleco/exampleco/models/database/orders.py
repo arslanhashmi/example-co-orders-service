@@ -3,26 +3,25 @@ from sqlalchemy.orm import relationship
 from marshmallow import fields, Schema
 from marshmallow_sqlalchemy import SQLAlchemySchema
 
+from .base import TimeStampedModel
 from .order_items import OrderItem
 from .services import ServiceSchema
 
-from . import Base
 
-
-class Order(Base):
+class Order(TimeStampedModel):
     __tablename__ = "orders"
 
     id = Column(Integer, primary_key=True)
     description = Column(TEXT, nullable=True)
     service = relationship("Service", secondary=OrderItem)
     created_on = Column(TIMESTAMP, nullable=False, server_default=text("CURRENT_TIMESTAMP"))
-    active_status = Column(Boolean, nullable=False, server_default=text("True"))
+    is_deleted = Column(Boolean, nullable=False, server_default=text("False"))
     modified_on = Column(
         TIMESTAMP, nullable=False, server_default=text("CURRENT_TIMESTAMP"), server_onupdate=text("CURRENT_TIMESTAMP")
     )
 
     def __repr__(self) -> str:
-        return "<Order(description='{}', created_on='{}')>".format(self.description, self.created_on)
+        return f"<Order(description='{self.description}', created_on='{self.created_on}')>"
 
 
 class OrderSchema(SQLAlchemySchema):
@@ -32,7 +31,7 @@ class OrderSchema(SQLAlchemySchema):
 
     id = fields.Integer()
     description = fields.String(required=True)
-    active_status = fields.Boolean(required=True)
+    is_deleted = fields.Boolean()
     created_on = fields.DateTime()
     modified_on = fields.DateTime()
     service = fields.Nested(ServiceSchema, many=True)
@@ -40,5 +39,4 @@ class OrderSchema(SQLAlchemySchema):
 
 class OrderRequestSchema(Schema):
     description = fields.String(required=True)
-    active_status = fields.Boolean(required=True)
     services = fields.List(fields.Integer, required=True)

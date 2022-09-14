@@ -12,13 +12,13 @@ setup:
 	@. venv/bin/activate; pip install --disable-pip-version-check --exists-action w -r requirements/base.txt -r requirements/dev.txt
 
 upgrade-db:
-	alembic --config src/exampleco/migrations/database/alembic.ini upgrade heads
+	@. venv/bin/activate; alembic --config src/exampleco/migrations/database/alembic.ini upgrade heads
 
 migration:
-	alembic --config src/exampleco/migrations/database/alembic.ini revision -m "${}" --autogenerate
+	@. venv/bin/activate; alembic --config src/exampleco/migrations/database/alembic.ini revision -m "${}" --autogenerate
 
 downgrade-db:
-	alembic --config src/exampleco/migrations/database/alembic.ini downgrade ${}
+	@. venv/bin/activate; alembic --config src/exampleco/migrations/database/alembic.ini downgrade ${}
 
 serverless-offline:
 	serverless offline \
@@ -27,4 +27,4 @@ serverless-offline:
 			--lambdaPort 3000 \
 			--region us-east-1 \
 
-up: up-db setup migrate serverless-offline
+up: up-db setup upgrade-db serverless-offline

@@ -1,8 +1,8 @@
-"""add new tables
+"""Add models for Orders and OrderItems
 
-Revision ID: eb7526ac380e
-Revises: c24e3bd6a831
-Create Date: 2022-09-14 15:14:30.301719
+Revision ID: d42e03137240
+Revises: ce523d10f80f
+Create Date: 2022-09-14 23:16:12.976880
 
 """
 from alembic import op
@@ -10,8 +10,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'eb7526ac380e'
-down_revision = 'c24e3bd6a831'
+revision = 'd42e03137240'
+down_revision = 'ce523d10f80f'
 branch_labels = None
 depends_on = None
 
@@ -22,7 +22,7 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('description', sa.TEXT(), nullable=True),
     sa.Column('created_on', sa.TIMESTAMP(), server_default=sa.text('CURRENT_TIMESTAMP'), nullable=False),
-    sa.Column('active_status', sa.Boolean(), server_default=sa.text('True'), nullable=False),
+    sa.Column('is_deleted', sa.Boolean(), server_default=sa.text('False'), nullable=False),
     sa.Column('modified_on', sa.TIMESTAMP(), server_default=sa.text('CURRENT_TIMESTAMP'), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )

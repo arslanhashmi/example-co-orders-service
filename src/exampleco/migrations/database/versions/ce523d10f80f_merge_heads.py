@@ -1,8 +1,8 @@
-"""empty message
+"""merge heads
 
-Revision ID: c24e3bd6a831
+Revision ID: ce523d10f80f
 Revises: d3bdae443a1a, 52ad861d3c4c
-Create Date: 2022-09-14 13:17:51.794770
+Create Date: 2022-09-14 23:05:34.086850
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'c24e3bd6a831'
+revision = 'ce523d10f80f'
 down_revision = ('d3bdae443a1a', '52ad861d3c4c')
 branch_labels = None
 depends_on = None

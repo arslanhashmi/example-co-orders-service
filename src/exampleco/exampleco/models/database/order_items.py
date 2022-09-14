@@ -1,10 +1,10 @@
 from sqlalchemy import Column, Table, ForeignKey
 
-from . import Base
+from .base import TimeStampedModel
 
 OrderItem = Table(
     "order_items",
-    Base.metadata,
+    TimeStampedModel.metadata,
     Column("order_id", ForeignKey("orders.id"), primary_key=True),
     Column("service_id", ForeignKey("services.id"), primary_key=True),
 )

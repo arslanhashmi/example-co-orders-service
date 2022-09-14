@@ -13,6 +13,7 @@ SQLAlchemy==1.3.18
 toml==0.10.2
 wcwidth==0.2.5
 wrapt==1.12.1
+
 # Add missing requirements
 cryptography==38.0.1
 alembic==1.8.1

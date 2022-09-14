@@ -131,3 +131,6 @@ dmypy.json
 
 # node modules
 node_modules/*
+
+# DB mount path
+docker/data 
